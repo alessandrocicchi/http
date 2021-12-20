@@ -32,13 +32,15 @@ public class JavaHTTPServer implements Runnable{
 	
 	// Client Connection via Socket Class
 	private Socket connect;
+	private int statusCode=0;
 	
 	public JavaHTTPServer(Socket c) {
 		connect = c;
 	}
 	
 	public static void main(String[] args) {
-		try {
+	
+				try {
 			ServerSocket serverConnect = new ServerSocket(PORT);
 			System.out.println("Server started.\nListening for connections on port : " + PORT + " ...\n");
 			
@@ -58,12 +60,15 @@ public class JavaHTTPServer implements Runnable{
 		} catch (IOException e) {
 			System.err.println("Server Connection error : " + e.getMessage());
 		}
-	}
+			
+		}
+
 
 	
 
 	@Override
 	public void run() {
+
 		// we manage our particular client connection
 		BufferedReader in = null; PrintWriter out = null; BufferedOutputStream dataOut = null;
 		String fileRequested = null;
@@ -185,12 +190,27 @@ public class JavaHTTPServer implements Runnable{
 	
 	// return supported MIME Types
 	private String getContentType(String fileRequested) {
-		if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html"))
+		if (fileRequested.endsWith(".htm")  ||  fileRequested.endsWith(".html")){
 			return "text/html";
-		else
+		}else if(fileRequested.endsWith(".jpg")){
+			return "image/jpg";
+		}else if(fileRequested.endsWith(".css")){
+			return "text/css";		
+		}else if(fileRequested.endsWith(".png")){
+			return "text/png";
+		}else if(fileRequested.endsWith(".jpeg")){
+			return "image/jpeg";		
+		}else if(fileRequested.endsWith(".gif")){
+			return "image/gif";	
+		}else if(fileRequested.endsWith(".webp")){
+			return "image/webp";
+		}else if(fileRequested.endsWith(".js")){
+			return "text/js";	
+		}else{
 			return "text/plain";
-	}
-	
+		}
+		}
+
 	private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
 		File file = new File(WEB_ROOT, FILE_NOT_FOUND);
 		int fileLength = (int) file.length();
